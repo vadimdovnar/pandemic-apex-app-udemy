@@ -1,6 +1,6 @@
 public with sharing class DV_LocationTracingModel {
     
-    public static List<Location_Tracing__c> getAllLocationTracing(String locationId) {
+    public static List<Location_Tracing__c> getLocationTracingByLocationId(String locationId) {
         List<Location_Tracing__c> locationsTracing = [SELECT Id, Visit_Date__c, Person__c, Location__c, Person__r.Token__c, Person__r.Health_Status__c
                                                         FROM Location_Tracing__c
                                                         WHERE Id = :locationId
@@ -22,5 +22,13 @@ public with sharing class DV_LocationTracingModel {
                                                         WHERE Location__c IN :locationIds
                                                         AND Person__r.Health_Status__c = 'Green'];
         return locationsTracing;
+    }
+
+    public static List<Location_Tracing__c> getLocationTracingByPersonIdsAndLocationIds(Set<Id> personIds, Set<id> locationIds) {
+        List<Location_Tracing__c> locationTracing = [SELECT Id, Name, Person__c, Location__c, Visit_Date__c 
+                                                    FROM Location_Tracing__c
+                                                    WHERE Person__c IN : personIds
+                                                    AND Location__c IN : locationIds];
+        return locationTracing;
     }
 }
