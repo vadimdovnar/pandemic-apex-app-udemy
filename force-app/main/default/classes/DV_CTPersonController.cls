@@ -27,5 +27,15 @@ public with sharing class DV_CTPersonController {
         return null;
     }
     
+    public static Map<String, Integer> getHealthStatusCount() {
+        Map<String, Integer> healtStatusMap = new Map<String, Integer>();
+        for(AggregateResult ar : DV_PersonModel.getPersonStatusCount()) {
+
+            String healthStatus = String.valueOf(ar.get('Health_Status__c'));
+            Integer count = Integer.valueOf(ar.get('total'));
+            healtStatusMap.put(healthStatus, count);
+        }
+        return healtStatusMap;
+    }
 
 }

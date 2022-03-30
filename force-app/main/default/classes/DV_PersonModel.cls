@@ -30,10 +30,13 @@ public with sharing class DV_PersonModel {
 
     public static List<Person__c> getListPersonsById(String personId) {
         List<Person__c> person = [SELECT Id, Name, Mobile__c, Token__c, Health_Status__c, Status_Update_Date__c 
-                            FROM Person__c 
-                            WHERE Id = :personId];
+                                    FROM Person__c 
+                                    WHERE Id = :personId];
         return person;
     }
     
+    public static AggregateResult[] getPersonStatusCount() {
+        return [SELECT Health_Status__c, COUNT(Id) total FROM Person__c GROUP BY Health_Status__c];
+    }
     
 }

@@ -3,4 +3,23 @@
 //     query text and running the command:
 //     SFDX: Execute SOQL Query with Currently Selected Text
 
-SELECT Id, Name FROM Account
+SELECT COUNT() FROM Account;
+
+SELECT MAX(Amount) FROM Opportunity;
+
+// return the average value of a numeric field
+SELECT AVG(Amount) FROM Opportunity;
+// return number of rows
+SELECT COUNT(Amount) FROM Opportunity;
+
+SELECT COUNT_DISTINCT() FROM Opportunity;
+
+SELECT MIN(Amount) FROM Opportunity;
+
+SELECT SUM(Amount) FROM Opportunity;
+
+SELECT COUNT(Id), StageName, LeadSource, MIN(Amount), MAX(Amount), SUM(Amount)  FROM Opportunity GROUP BY StageName, LeadSource;
+
+SELECT COUNT(Id), StageName, LeadSource, MIN(Amount), MAX(Amount), SUM(Amount)  FROM Opportunity GROUP BY StageName, LeadSource HAVING SUM(Amount) > 300000;
+
+
