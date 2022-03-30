@@ -47,4 +47,16 @@ public with sharing class DV_CTLocationTracingController {
         }
         return listDuplicate;
     }
+
+    public static Map<String, Integer> getStatusCount() {
+        Map<String, Integer> statusLocationCount = new Map<String, Integer>();
+
+        for(AggregateResult ar : DV_LoacionModel.getLocationStatus()) {
+
+            String locationStatus = String.valueOf(ar.get('Status__c'));
+            Integer total = Integer.valueOf(ar.get('total'));
+            statusLocationCount.put(locationStatus, total);
+        }
+        return statusLocationCount;
+    }
 }

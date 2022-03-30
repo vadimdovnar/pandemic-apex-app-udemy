@@ -25,4 +25,8 @@ public with sharing class DV_LoacionModel {
                                         WHERE Id = :LocationId];
         return locations;
     }
+
+    public static AggregateResult[] getLocationStatus() {
+        return [SELECT Status__c, COUNT(Id) total FROM Location__c GROUP BY Status__c];
+    }
 }
