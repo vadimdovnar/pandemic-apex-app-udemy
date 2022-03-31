@@ -22,4 +22,5 @@ SELECT COUNT(Id), StageName, LeadSource, MIN(Amount), MAX(Amount), SUM(Amount)  
 
 SELECT COUNT(Id), StageName, LeadSource, MIN(Amount), MAX(Amount), SUM(Amount)  FROM Opportunity GROUP BY StageName, LeadSource HAVING SUM(Amount) > 300000;
 
-
+//Триггер — это специальный набор операций или операторов, который запускается, когда что-то изменяется в вашей базе данных.
+//Триггер Apex — это код Apex, который запускается при изменении объекта Salesforce.
