@@ -22,4 +22,24 @@ public with sharing class DV_ContactTriggerHandler {
             }
         DV_AccountContactService.updateActiveContacts(accountIds);
     }
+
+    public static void afterDeleteHandler(List<Contact> oldContacts) {
+        Set<Id> accountIds = new Set<Id>();
+            for (Contact con : oldContacts) {
+                if(String.isNotBlank(con.AccountId)) {
+                    accountIds.add(con.AccountId);
+                }
+            }
+        DV_AccountContactService.updateActiveContacts(accountIds);
+    }
+
+    public static void afterUndeleteHandler(List<Contact> newContacts) {
+        Set<Id> accountIds = new Set<Id>();
+            for (Contact con : newContacts) {
+                if(String.isNotBlank(con.AccountId)) {
+                    accountIds.add(con.AccountId);
+                }
+            }
+        DV_AccountContactService.updateActiveContacts(accountIds);
+    }
 }

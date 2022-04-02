@@ -7,5 +7,11 @@ trigger DV_ContactTrigger on Contact (after insert, after delete, after update, 
         when AFTER_UPDATE {
             DV_ContactTriggerHandler.afterUpdateHandler(Trigger.new, Trigger.oldMap);
         }
+        when AFTER_DELETE {
+            DV_ContactTriggerHandler.afterDeleteHandler(Trigger.old);
+        }
+        when AFTER_UNDELETE {
+            DV_ContactTriggerHandler.afterUndeleteHandler(Trigger.new);
+        }
     }
 }
