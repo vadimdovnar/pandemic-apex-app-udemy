@@ -29,8 +29,16 @@ public with sharing class DV_PersonTriggerHandler {
                 redStatus.add(person.Id);
             }
         }
+        Set<Id> alreadyProcessed = new Set<Id>();
+        alreadyProcessed.addAll(redStatus);
 
         Set<Id> orangeStatus = new Set<Id>();
         Set<Id> yellowStatus = new Set<Id>();
+
+        orangeStatus.addAll(DV_CTPersonController.getCohabitants(redStatus, alreadyProcessed));
+        yellowStatus.addAll(DV_CTPersonController.getNeighbours(redStatus, alreadyProcessed));
+        Set<Id> primaryContacts = DV_CTPersonController.getPrimaryContacts(redStatus,alreadyProcessed);
+        orangeStatus.addAll(primaryContacts);
+        yellowStatus.addAll(DV_CTPersonController.getSecondaryContacts(primaryContacts, alreadyProcessed));
     }
 }

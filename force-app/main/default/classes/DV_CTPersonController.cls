@@ -38,7 +38,7 @@ public with sharing class DV_CTPersonController {
         return healtStatusMap;
     }
 
-    public static Set<Id> getCohabitants(Set<Id> personIds) {
+    public static Set<Id> getCohabitants(Set<Id> personIds, Set<Id> allreadyProcessed) {
         List<String> healthStatus = new List<String>{'Green', 'Yellow'};
         List<People_Tracing__c> peopleTraces = [SELECT Id, Contact_Type__c, Person_1__c, Person_2__c FROM People_Tracing__c
                                                  WHERE (Person_1__c IN :personIds OR Person_2__c IN :personIds) 
@@ -47,17 +47,19 @@ public with sharing class DV_CTPersonController {
 
         Set<Id> cohabitants = new Set<Id>();
         for (People_Tracing__c pt : peopleTraces) {
-            if(! personIds.contains(pt.Person_1__c)) {
+            if(! allreadyProcessed.contains(pt.Person_1__c)) {
                 cohabitants.add(pt.Person_1__c);
+                allreadyProcessed.add(pt.Person_1__c);
             }
             if(! personIds.contains(pt.Person_2__c)) {
                 cohabitants.add(pt.Person_2__c);
+                allreadyProcessed.add(pt.Person_2__c);
             }
         }
         return cohabitants;
     }
 
-    public static Set<Id> getNeighbours(Set<Id> personIds) {
+    public static Set<Id> getNeighbours(Set<Id> personIds, Set<Id> allreadyProcessed) {
         List<People_Tracing__c> peopleTraces = [SELECT Id, Contact_Type__c, Person_1__c, Person_2__c FROM People_Tracing__c
                                                  WHERE (Person_1__c IN :personIds OR Person_2__c IN :personIds) 
                                                  AND Contact_Type__c = 'Neighbour'
@@ -65,17 +67,19 @@ public with sharing class DV_CTPersonController {
 
         Set<Id> neighbours = new Set<Id>();
         for (People_Tracing__c pt : peopleTraces) {
-            if(! personIds.contains(pt.Person_1__c)) {
+            if(! allreadyProcessed.contains(pt.Person_1__c)) {
                 neighbours.add(pt.Person_1__c);
+                allreadyProcessed.add(pt.Person_1__c);
             }
             if(! personIds.contains(pt.Person_2__c)) {
                 neighbours.add(pt.Person_2__c);
+                allreadyProcessed.add(pt.Person_2__c);
             }
         }
         return neighbours;
     }
 
-    public static Set<Id> getPrimaryContacts(Set<Id> personIds) {
+    public static Set<Id> getPrimaryContacts(Set<Id> personIds, Set<Id> allreadyProcessed) {
         List<String> healthStatus = new List<String>{'Green', 'Yellow'};
         List<People_Tracing__c> peopleTraces = [SELECT Id, Contact_Date__c, Contact_Type__c, Person_1__c, Person_2__c FROM People_Tracing__c
                                                  WHERE (Person_1__c IN :personIds OR Person_2__c IN :personIds) 
@@ -85,17 +89,19 @@ public with sharing class DV_CTPersonController {
 
         Set<Id> primaryContacts = new Set<Id>();
         for (People_Tracing__c pt : peopleTraces) {
-            if(! personIds.contains(pt.Person_1__c)) {
+            if(! allreadyProcessed.contains(pt.Person_1__c)) {
                 primaryContacts.add(pt.Person_1__c);
+                allreadyProcessed.add(pt.Person_1__c);
             }
             if(! personIds.contains(pt.Person_2__c)) {
                 primaryContacts.add(pt.Person_2__c);
+                allreadyProcessed.add(pt.Person_2__c);
             }
         }
         return primaryContacts;
     }
 
-    public static Set<Id> getSecondaryContacts(Set<Id> primaryContactIds) {
+    public static Set<Id> getSecondaryContacts(Set<Id> primaryContactIds,Set<Id> allreadyProcessed) {
         List<String> healthStatus = new List<String>{'Green', 'Yellow'};
         List<People_Tracing__c> peopleTraces = [SELECT Id, Contact_Date__c, Contact_Type__c, Person_1__c, Person_2__c FROM People_Tracing__c
                                                         WHERE (Person_1__c IN :primaryContactIds OR Person_2__c IN :primaryContactIds) 
@@ -105,11 +111,13 @@ public with sharing class DV_CTPersonController {
 
         Set<Id> secondaryContacts = new Set<Id>();
         for (People_Tracing__c pt : peopleTraces) {
-            if(! primaryContactIds.contains(pt.Person_1__c)) {
+            if(! allreadyProcessed.contains(pt.Person_1__c)) {
                 secondaryContacts.add(pt.Person_1__c);
+                allreadyProcessed.add(pt.Person_1__c);
             }
             if(! primaryContactIds.contains(pt.Person_2__c)) {
                 secondaryContacts.add(pt.Person_2__c);
+                allreadyProcessed.add(pt.Person_2__c);
             }
         }
         return secondaryContacts;
