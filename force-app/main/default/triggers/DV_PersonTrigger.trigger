@@ -1,4 +1,4 @@
-trigger DV_PersonTrigger on Person__c (before insert, before update) {
+trigger DV_PersonTrigger on Person__c (before insert, before update, after update) {
     
     switch on Trigger.operationType {
         when BEFORE_INSERT  {
@@ -9,7 +9,10 @@ trigger DV_PersonTrigger on Person__c (before insert, before update) {
 
             DV_PersonTriggerHandler.beforeUpdateHandler(Trigger.new, Trigger.oldMap);
         }
-        
+        when AFTER_UPDATE {
+
+            DV_PersonTriggerHandler.afterUpdateHandler(Trigger.new, Trigger.oldMap);
+        }
         
     }
 }

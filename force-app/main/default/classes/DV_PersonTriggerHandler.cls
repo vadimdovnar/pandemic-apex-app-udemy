@@ -16,4 +16,13 @@ public with sharing class DV_PersonTriggerHandler {
             }
         }
     }
+
+    public static void afterUpdateHandler(List<Person__c> newRecords, Map<Id, Person__c> oldMapRecords) {
+
+        for (Person__c person : newRecords) {
+            if(person.Health_Status__c != oldMapRecords.get(person.Id).Health_Status__c) {
+                
+            }
+        }
+    }
 }
