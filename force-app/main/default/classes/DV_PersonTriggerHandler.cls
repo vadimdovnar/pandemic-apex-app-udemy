@@ -19,10 +19,18 @@ public with sharing class DV_PersonTriggerHandler {
 
     public static void afterUpdateHandler(List<Person__c> newRecords, Map<Id, Person__c> oldMapRecords) {
 
+        Set<Id> changeStatus = new Set<Id>();
+        Set<Id> redStatus = new Set<Id>();
         for (Person__c person : newRecords) {
             if(person.Health_Status__c != oldMapRecords.get(person.Id).Health_Status__c) {
-                
+                changeStatus.add(person.Id);
+            }
+            if(person.Health_Status__c == 'Red' && oldMapRecords.get(person.Id).Health_Status__c != 'Red') {
+                redStatus.add(person.Id);
             }
         }
+
+        Set<Id> orangeStatus = new Set<Id>();
+        Set<Id> yellowStatus = new Set<Id>();
     }
 }
