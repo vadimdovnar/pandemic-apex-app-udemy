@@ -35,10 +35,34 @@ public with sharing class DV_PersonTriggerHandler {
         Set<Id> orangeStatus = new Set<Id>();
         Set<Id> yellowStatus = new Set<Id>();
 
+        List<Person__c> personToUpdate = new List<Person__c>();
+
         orangeStatus.addAll(DV_CTPersonController.getCohabitants(redStatus, alreadyProcessed));
-        yellowStatus.addAll(DV_CTPersonController.getNeighbours(redStatus, alreadyProcessed));
         Set<Id> primaryContacts = DV_CTPersonController.getPrimaryContacts(redStatus,alreadyProcessed);
+        yellowStatus.addAll(DV_CTPersonController.getNeighbours(redStatus, alreadyProcessed));
         orangeStatus.addAll(primaryContacts);
         yellowStatus.addAll(DV_CTPersonController.getSecondaryContacts(primaryContacts, alreadyProcessed));
+
+        for (Id pId : orangeStatus) {
+            personToUpdate.add(new Person__c(Id = pId, Health_Status__c = 'Orange'));
+        }
+
+        for (Id pId : yellowStatus) {
+            personToUpdate.add(new Person__c(Id = pId, Health_Status__c = 'Yellow'));
+        }
+
+        if(personToUpdate.size() > 0) {
+            update personToUpdate;
+        }
+
+        List<Location_Tracing__c> locationTraces = DV_CTLocationTracingController.getLocationsByPersonIds(changeStatus);
+        if(locationTraces != null && locationTraces.size() > 0) {
+            Set<Id> locationIds = new Set<Id>();
+
+            for (Location_Tracing__c trace : locationTraces) {
+                locationIds.add(trace.Location__c);
+            }
+            DV_CTLocationController.updateRedScore(locationIds);
+        }
     }
 }
