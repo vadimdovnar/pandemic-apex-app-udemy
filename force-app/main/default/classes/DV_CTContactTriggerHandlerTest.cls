@@ -60,4 +60,38 @@ public with sharing class DV_CTContactTriggerHandlerTest {
         List<Contact> allContacts = [SELECT Id FROM Contact];
         System.assertEquals(5, allContacts.size());
     }
-}
+
+    @isTest
+    static void afterInsrtHandlerTestBulk() {
+        
+        List<Account> accountRecords = new List<Account>();
+        accountRecords.add(new Account(Name = 'Test 1'));
+        accountRecords.add(new Account(Name = 'Test 2'));
+
+        insert accountRecords;
+
+        List<Contact> contactRecords = new List<Contact>();
+        for (Integer i = 1; i <= 1000; i++) {
+            contactRecords.add(new Contact(LastName = 'Contact Test ' + i, AccountId = accountRecords[0].Id, Active__c = true));
+        }
+        contactRecords.add(new Contact(LastName = 'Contact Inative Test 1', AccountId = accountRecords[0].Id));
+        contactRecords.add(new Contact(LastName = 'Contact Inative Test 2', AccountId = accountRecords[0].Id));
+        contactRecords.add(new Contact(LastName = 'Contact Inative Test 3', AccountId = accountRecords[1].Id));
+
+        insert contactRecords;
+
+        List<Account> accs = [SELECT Id, Name, Active_Contacts__c FROM Account];
+        System.assertEquals(2, accountRecords.size());
+        for (Account acc : accs) {
+            if (acc.Name == 'Test 1') {
+                System.assertEquals(1000, acc.Active_Contacts__c);
+            }
+            if (acc.Name == 'Test 2') {
+                System.assertEquals(0, acc.Active_Contacts__c);
+            }
+        }
+
+        List<Contact> allContacts = [SELECT Id FROM Contact];
+        System.assertEquals(1003, allContacts.size());
+    }
+}   
