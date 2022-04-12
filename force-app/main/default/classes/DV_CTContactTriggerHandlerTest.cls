@@ -1,5 +1,23 @@
 @isTest
 public with sharing class DV_CTContactTriggerHandlerTest {
+
+    @TestSetup
+    static void makeData(){
+        List<Account> accountRecords = new List<Account>();
+        accountRecords.add(new Account(Name = 'Test 1'));
+        accountRecords.add(new Account(Name = 'Test 2'));
+
+        insert accountRecords;
+
+        List<Contact> contactRecords = new List<Contact>();
+        contactRecords.add(new Contact(LastName = 'Contact Test 1', AccountId = accountRecords[0].Id));
+        contactRecords.add(new Contact(LastName = 'Contact Test 2', AccountId = accountRecords[0].Id));
+        contactRecords.add(new Contact(LastName = 'Contact Test 3', AccountId = accountRecords[0].Id));
+        contactRecords.add(new Contact(LastName = 'Contact Test 4', AccountId = accountRecords[0].Id));
+        contactRecords.add(new Contact(LastName = 'Contact Test 5', AccountId = accountRecords[1].Id));
+
+        insert contactRecords;
+    }
     
     @isTest
     static void afterInsrtHandlerTest1() {
