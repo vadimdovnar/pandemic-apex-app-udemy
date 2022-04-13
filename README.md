@@ -20,3 +20,5 @@ The `sfdx-project.json` file contains useful configuration information for your 
 
 
 //sfdx force:user:permset:assign -n Health_Admin
+//check up apex tests
+//sfdx force:apex:test:run --tests DV_CTContactTriggerHandlerTest --resultformat human -c
