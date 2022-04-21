@@ -6,9 +6,25 @@
     {'label': 'Hard', 'value': 'hard'},
     ]"/>
 
+    <aura:attribute name="SelectedMode" type="String" />
+
     <lightning:card title="Word Shuffle">
-        <lightning:combobox name="gameMode"  value="inProgress" placeholder="Select Mode" options="{!v.modes}" />
-        <lightning:button variant="brand" label="Start New Game" title="Brand action"  />
-        <lightning:button variant="natural" label="Reshuffle" title="Reshuffle" />
+        <lightning:layout horizontalAlign="center">
+
+            <lightning:layoutItem padding="around-small">
+                <lightning:combobox name="gameMode" aura:id="SelectedGame" value="inProgress" variant="label-hidden" placeholder="Select Mode" options="{!v.modes}" />
+            </lightning:layoutItem>
+
+            <lightning:layoutItem padding="around-small">
+                <lightning:button variant="brand" label="Start New Game" title="Brand action" onclick="{!c.startGame}" />
+            </lightning:layoutItem>
+
+            <lightning:layoutItem padding="around-small">
+                <lightning:button label="Reshuffle" title="Reshuffle" onclick="{!c.reshuffle}" />
+            </lightning:layoutItem>
+
+        </lightning:layout>
+        
+        Selected Game Mode is: {!v.SelectedMode}
     </lightning:card>
 </aura:component>	
