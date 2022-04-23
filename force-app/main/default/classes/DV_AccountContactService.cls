@@ -13,6 +13,6 @@ public with sharing class DV_AccountContactService {
                 accountsForUpdate.put(accId, new Account(Id = accId, Active_Contacts__c = 0));
             }
         }
-        update accountsForUpdate.values();
+         update accountsForUpdate.values();
     }
 }
