@@ -2,3 +2,16 @@
     text-transform: uppercase;
     font-weight: bold;
 }
+.THIS.board {
+    background-color: #f7fafc;
+    position: relative;
+}
+.THIS .disabled-board {
+    z-index: 1;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    cursor: not-allowed;
+}

@@ -1,30 +1,42 @@
 <aura:component implements="flexipage:availableForAllPageTypes">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"></aura:handler>
 
-<aura:handler name="init" value="{!this}" action="{!c.doInit}"></aura:handler>
+    <aura:attribute name="words" type="List"></aura:attribute>
+    <aura:attribute name="winWord" type="String"></aura:attribute>
+    <aura:attribute name="clickCount" type="Integer" default="0"></aura:attribute>
+    <aura:attribute name="mode" type="String" default="hard"></aura:attribute>
+    <aura:attribute name="blockSize" type="Integer"></aura:attribute>
+    <aura:attribute name="result" type="String"></aura:attribute>
+    <aura:attribute name="disabledBoard" type="Boolean" default="false"></aura:attribute>
 
-<aura:attribute name="words" type="List" ></aura:attribute>
-<aura:attribute name="winWord" type="String" ></aura:attribute>
-<aura:attribute name="clickCount" type="Integer" default="0" ></aura:attribute>
+    <aura:handler name="onClick" event="c:BlockClickEvent" action="{!c.blockClickHandler}"></aura:handler>
+    <aura:method name="startGame" action="{!c.doInit}" description="Start new game"></aura:method>
 
+    <aura:method name="reshuffleBoard" action="{!c.reshuffleBoard}" description="Reshuffle Board"></aura:method>
 
-    <lightning:layout multipleRows="true">
-        <lightning:layoutItem padding="around-small">
-            <div class="slds-text-heading--medium">WORD : <span class="win-word">{!v.winWord}</span></div>
-        </lightning:layoutItem>
-        <lightning:layoutItem padding="around-small">
-            <div class="slds-text-heading--medium">Moves left : {! 3 - (v.clickCount)}</div>
-        </lightning:layoutItem>
-    </lightning:layout>
+    <div class="board">
+        <lightning:layout multipleRows="true">
+            <lightning:layoutItem padding="around-small">
+                <div class="slds-text-heading--medium">WORD : <span class="win-word">{!v.winWord}</span></div>
+            </lightning:layoutItem>
+            <lightning:layoutItem padding="around-small">
+                <div class="slds-text-heading--medium">{!v.result}</div>
+            </lightning:layoutItem>
+            <lightning:layoutItem padding="around-small">
+                <div class="slds-text-heading--medium">Moves left : {! 3 - (v.clickCount)}</div>
+            </lightning:layoutItem>
+        </lightning:layout>
 
-    <lightning:layout multipleRows="true">
+        <aura:if isTrue="{!v.disabledBoard}">
+            <div class="disabled-board"></div>
+        </aura:if>
 
-        <lightning:layoutItem size="4" padding="around-small">1</lightning:layoutItem>
-        <lightning:layoutItem size="4" padding="around-small">2</lightning:layoutItem>
-        <lightning:layoutItem size="4" padding="around-small">3</lightning:layoutItem>
-        <lightning:layoutItem size="4" padding="around-small">4</lightning:layoutItem>
-        <lightning:layoutItem size="4" padding="around-small">5</lightning:layoutItem>
-        <lightning:layoutItem size="4" padding="around-small">6</lightning:layoutItem>
-        <lightning:layoutItem size="4" padding="around-small">7</lightning:layoutItem>
-
-    </lightning:layout>
-</aura:component>	
+        <lightning:layout multipleRows="true">
+            <aura:iteration items="{!v.words}" var="wordObj">
+                <lightning:layoutItem size="{!v.blockSize}" padding="around-small">
+                    <c:Block label="{!wordObj.word}" open="{!wordObj.open}"></c:Block>
+                </lightning:layoutItem>
+            </aura:iteration>
+        </lightning:layout>
+    </div>
+</aura:component>

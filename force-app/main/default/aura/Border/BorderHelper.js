@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-expressions
 ({
     getWords : function(count) {
 
@@ -108,7 +109,11 @@
 
         wordsArray = this.randomizeArray(wordsArray);
 
-        let arrayWordsOfCount = wordsArray.slice(0, count);
+        const wordObjArray = wordsArray.map( element => {
+            return { word : element, open : false }
+        } )
+
+        let arrayWordsOfCount = wordObjArray.slice(0, count);
 
         return arrayWordsOfCount;
     }, 
@@ -127,6 +132,22 @@
 
     getWinWord : function(array) {
         let randomIndex = Math.floor( Math.random() * array.length );
-        return array[randomIndex];
+        return array[randomIndex].word;
+    },
+    diaabledBoard : function(component) {
+        component.set("v.disabledBoard", true);
+    },
+    enabledBoard : function(component) {
+        component.set("v.disabledBoard", false);
+    },
+    resetBorder : function(component) {
+        this.enabledBoard(component);
+        component.set("v.clickCount", 0);
+        component.set("v.result", "");
+    },
+    fireResultEvent : function ( eventValue ) {
+        const appEvent = $A.get("e.c:ResultApplicationEvent");
+        appEvent.setParams( {result : eventValue } );
+        appEvent.fire();
     }
 })

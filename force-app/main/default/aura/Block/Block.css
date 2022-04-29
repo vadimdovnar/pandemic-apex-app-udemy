@@ -1,0 +1,15 @@
+.THIS.blockWord {
+        background-color: #fff;
+        height: 80px;
+        border-radius: 5px;
+        cursor: pointer;
+        text-transform: uppercase;
+        font-weight: bold;
+        letter-spacing: 1px;
+        font-size: large;
+        transition: all 0.5s;
+}
+.THIS.blockWord:hover {
+    background-color: #ededed;
+    border: 1px solid #ededed;
+}

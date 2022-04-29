@@ -1,4 +1,4 @@
-<aura:component implements="flexipage:availableForAllPageTypes">
+<aura:component implements="flexipage:availableForAllPageTypes"  controller="DV_BorderPanelController">
 
     <aura:attribute name="modes" type="List" default="[
     {'label': 'Easy', 'value': 'easy'},
@@ -7,9 +7,12 @@
     ]"/>
 
     <aura:attribute name="SelectedMode" type="String" />
+    <aura:attribute name="disabled" type="Boolean" default="true"></aura:attribute>
+
+    <aura:handler event="c:ResultApplicationEvent" action="{!c.onResultHandler}"></aura:handler>
 
     <lightning:card title="Word Shuffle">
-        <lightning:layout horizontalAlign="center">
+        <lightning:layout horizontalAlign="center" multipleRows="true">
 
             <lightning:layoutItem padding="around-small">
                 <lightning:combobox name="gameMode" aura:id="SelectedGame" value="inProgress" variant="label-hidden" placeholder="Select Mode" options="{!v.modes}" />
@@ -20,11 +23,16 @@
             </lightning:layoutItem>
 
             <lightning:layoutItem padding="around-small">
-                <lightning:button label="Reshuffle" title="Reshuffle" onclick="{!c.reshuffle}" />
+                <lightning:button label="Reshuffle" title="Reshuffle" disabled="{!v.disabled}" onclick="{!c.reshuffle}" />
             </lightning:layoutItem>
+
+            <aura:if isTrue="{! (v.SelectedMode != null) }">
+                <lightning:layoutItem size="12"> 
+                    <c:Border aura:id="boardComp" mode="{!v.SelectedMode}"></c:Border>
+                </lightning:layoutItem>
+            </aura:if>
 
         </lightning:layout>
         
-        Selected Game Mode is: {!v.SelectedMode}
     </lightning:card>
 </aura:component>	
